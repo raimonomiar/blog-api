@@ -1,1 +1,1 @@
-# AnimeNotify
+# Blog
