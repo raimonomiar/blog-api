@@ -2,7 +2,8 @@ import Express, { Application, Request, Response } from "express";
 import { connect } from "mongoose";
 import { IApplicationOptions, IDatabaseConnectionOptions } from "./shared/interfaces";
 import cors from "cors";
-
+import swaggerUi from "swagger-ui-express";
+import swaggerSpec from "./api_docs/swagger.json";
 export default class App {
     private app: Application;
     port: number;
@@ -100,6 +101,8 @@ export default class App {
             });
         });
 
+        this.app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+        
         controllers.forEach(controller => {
             this.app.use(`/${controller.route}`, controller.router);
         });

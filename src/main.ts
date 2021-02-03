@@ -4,6 +4,9 @@ import helmet from "helmet";
 import App from "./app";
 import logger from "./shared/logger";
 import { urlencoded } from "express";
+import { loggerMiddleware } from "./middlewares";
+import { AuthController } from "./controllers";
+import { UserService } from "./services";
 
 declare global {
     namespace NodeJS {
@@ -21,17 +24,19 @@ const { error } = config({
 if (error) {
     throw new Error(error.message);
 }
-console.log(process.env.APP_PORT)
 
-global.logger = logger
+global.logger = logger;
+
 const app = new App({
-    controllers: [],
+    controllers: [
+        new AuthController(new UserService())
+    ],
     middlewares: [
         helmet(),
         urlencoded({
             extended: true
         }),
-
+        loggerMiddleware
     ],
     port: Number(process.env.APP_PORT)
 });
