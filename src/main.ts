@@ -3,7 +3,7 @@ import { resolve } from "path";
 import helmet from "helmet";
 import App from "./app";
 import logger from "./shared/logger";
-import { urlencoded } from "express";
+import { urlencoded, json } from "express";
 import { loggerMiddleware } from "./middlewares";
 import { AuthController } from "./controllers";
 import { UserService } from "./services";
@@ -36,6 +36,7 @@ const app = new App({
         urlencoded({
             extended: true
         }),
+        json(),
         loggerMiddleware
     ],
     port: Number(process.env.APP_PORT)

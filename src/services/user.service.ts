@@ -1,10 +1,11 @@
-import { UserModel } from "../models/user.model";
+import UserModel from "../models/user.model";
 
 export class UserService {
 
-    getByEmail(email: string) {
-        return UserModel.findOne({
+    async getByEmail(email: string) {
+        const user = await  UserModel.findOne({
             email
-        });
+        }).exec();
+        return user;
     }
 }

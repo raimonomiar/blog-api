@@ -1,5 +1,4 @@
 import { Schema, model } from "mongoose";
-
 const UserSchema = new Schema({
     name: {
         type: String,
@@ -17,11 +16,12 @@ const UserSchema = new Schema({
         type: String
     },
     updatedAt: {
-        type: Date 
+        type: Date
     },
     deletedAt: {
         type: Date
     }
-},{ timestamps: true });
+}, { timestamps: true });
 
-export const UserModel = model("user", UserSchema, "users");
+const UserModel = model("user", UserSchema, "users");
+export default UserModel;
