@@ -1,7 +1,6 @@
 import { hash, compare } from "bcrypt";
 import { sign } from "jsonwebtoken";
-export async function generateHash(data: string) {
-    const saltRound = process.env.SALT_ROUND;
+export async function generateHash(data: string, saltRound: string = process.env.SALT_ROUND) {
     return await hash(data, Number(saltRound));
 }
 
