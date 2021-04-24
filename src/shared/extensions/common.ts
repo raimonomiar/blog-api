@@ -8,10 +8,7 @@ export async function compareHash(data: string, hash: string) {
     return await compare(data, hash);
 }
 
-export function generateJwtToken(data: { _id: string, email: string }) {
-    const jwtPrivateKey = process.env.JWT_PRIVATE_KEY;
-    const expiryTime = process.env.TOKEN_EXPIRY_TIME;
-
+export function generateJwtToken(data: { _id: string, email: string }, jwtPrivateKey: string = process.env.JWT_PRIVATE_KEY, expiryTime: string = process.env.TOKEN_EXPIRY_TIME) {
     return sign(data, jwtPrivateKey, {
         expiresIn: Number(expiryTime)
     });

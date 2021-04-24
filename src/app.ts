@@ -1,6 +1,6 @@
 import Express, { Application, Request, Response } from "express";
-import { connect } from "mongoose";
 import { IApplicationOptions, IDatabaseConnectionOptions } from "./shared/interfaces";
+import { sequelize } from "./models";
 import cors from "cors";
 import swaggerUi from "swagger-ui-express";
 import swaggerSpec from "./api_docs/swagger.json";
@@ -8,7 +8,7 @@ export default class App {
     private app: Application;
     port: number;
 
-    constructor({ controllers, middlewares, port }: IApplicationOptions) {
+    constructor({ controllers, middlewares, port, }: IApplicationOptions) {
         this.app = Express();
         this.port = port;
 
@@ -19,7 +19,6 @@ export default class App {
             username: process.env.DB_USER,
             password: process.env.DB_PASSWORD,
             host: process.env.DB_HOST,
-            authSource: process.env.DB_AUTH_SOURCE,
             port: parseInt(process.env.DB_PORT, 10)
         });
 
@@ -28,41 +27,14 @@ export default class App {
 
     async createDatabaseConnection(connOptions: IDatabaseConnectionOptions) {
         try {
-            let connectionUri = `mongodb://${connOptions.host}:${connOptions.port}/${connOptions.database}`;
-            if (connOptions.username || connOptions.password) {
-                connectionUri = `mongodb://${connOptions.username || ''}:${connOptions.password || ''}@${connOptions.host}:${connOptions.port}/${connOptions.database}`;
-            }
-
-            //auth source
-            if (connOptions.authSource) {
-                connectionUri = `${connectionUri}?authSource=${connOptions.authSource}`
-            }
-
-            //logging connection 
-            if (process.env.NODE_ENV !== "production") {
-                global.logger.log({
-                    level: 'debug',
-                    message: connectionUri,
-                    metadata: {
-                        useNewUrlParser: true,
-                        useUnifiedTopology: true,
-                        useFindAndModify: false,
-                        useCreateIndex: true
-                    }
-                })
-            }
-
-            await connect(connectionUri, {
-                useNewUrlParser: true,
-                useUnifiedTopology: true,
-                useFindAndModify: false,
-                useCreateIndex: true
-            });
-
+            
+        await sequelize(connOptions);
+            
         } catch (error) {
             global.logger.log({
                 level: "error",
-                message: "Error connecting to database"
+                message: "Error connecting to database",
+                detail: error.message
             })
         }
     }

@@ -1,27 +1,43 @@
-import { Schema, model } from "mongoose";
-const UserSchema = new Schema({
-    name: {
-        type: String,
-        required: true
-    },
-    email: {
-        type: String,
-        required: true,
-    },
-    password: {
-        type: String,
-        required: true
-    },
-    location: {
-        type: String
-    },
-    updatedAt: {
-        type: Date
-    },
-    deletedAt: {
-        type: Date
-    }
-}, { timestamps: true });
+import { Model, Sequelize, DataTypes } from "sequelize";
 
-const UserModel = model("user", UserSchema, "users");
-export default UserModel;
+export class User extends Model {
+
+}
+
+export function user(sequelize: Sequelize) {
+    User.init({
+        userid: {
+            type: DataTypes.NUMBER,
+            primaryKey: true
+        },
+        guid: {
+            type: DataTypes.UUID        
+        },
+        name: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        email: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        password: {
+            type: DataTypes.STRING,
+        },
+        location: {
+            type: DataTypes.STRING,
+        },
+        createdat: {
+            type: DataTypes.DATE
+        },
+        updatedat: {
+            type: DataTypes.DATE
+        },
+        deletedat: {
+            type: DataTypes.DATE
+        }
+    }, {
+        sequelize,
+        timestamps: false
+    });
+}

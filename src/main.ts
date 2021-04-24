@@ -7,6 +7,7 @@ import { urlencoded, json } from "express";
 import { loggerMiddleware } from "./middlewares";
 import { AuthController } from "./controllers";
 import { UserService } from "./services";
+import { Sequelize } from "sequelize";
 
 declare global {
     namespace NodeJS {
@@ -26,6 +27,7 @@ if (error) {
 }
 
 global.logger = logger;
+let sequelize:Sequelize = null;
 
 const app = new App({
     controllers: [
@@ -39,12 +41,14 @@ const app = new App({
         json(),
         loggerMiddleware
     ],
-    port: Number(process.env.APP_PORT)
+    port: Number(process.env.APP_PORT),
+    sequelize
 });
 
 app.run( () => {
     global.logger.log({
         level: 'info',
-        message: `Server running in ${environment} mode`
+        message: `Server running in ${environment} mode`,
+        skip: true
     });
 })
