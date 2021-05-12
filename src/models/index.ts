@@ -1,6 +1,9 @@
 import { Sequelize } from "sequelize";
 import { IDatabaseConnectionOptions } from "../shared/interfaces";
+import { category } from "./category.model";
+import { comment } from "./comment.model";
 import { logInfo } from "./loginfo.model";
+import { post } from "./post.model";
 import { user } from "./user.model";
 
 
@@ -30,6 +33,9 @@ export const sequelize = async (connOptions: IDatabaseConnectionOptions) => {
         //initialize models
         user(config);
         logInfo(config);
+        category(config);
+        comment(config);
+        post(config);
 
         
     } catch (error) {
@@ -43,3 +49,6 @@ export const sequelize = async (connOptions: IDatabaseConnectionOptions) => {
 
 export * from "./user.model";
 export * from "./loginfo.model";
+export * from "./category.model";
+export * from "./comment.model";
+export * from "./post.model";

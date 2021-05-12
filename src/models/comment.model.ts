@@ -1,19 +1,19 @@
 import { Model, Sequelize, DataTypes } from "sequelize";
 
-export class User extends Model {
+export class Comment extends Model {
 
 }
 
-export function user(sequelize: Sequelize) {
-    User.init({
-        userid: {
+export function comment(sequelize: Sequelize) {
+    Comment.init({
+        commentid: {
             type: DataTypes.NUMBER,
             primaryKey: true
         },
         guid: {
             type: DataTypes.UUID        
         },
-        name: {
+        content: {
             type: DataTypes.STRING,
             allowNull: false,
         },
@@ -21,11 +21,14 @@ export function user(sequelize: Sequelize) {
             type: DataTypes.STRING,
             allowNull: false,
         },
-        password: {
-            type: DataTypes.STRING,
+        isremoved: {
+            type: DataTypes.BOOLEAN,
         },
-        location: {
-            type: DataTypes.STRING,
+        star: {
+            type: DataTypes.NUMBER,
+        },
+        postid: {
+            type: DataTypes.NUMBER,
         },
         createdat: {
             type: DataTypes.DATE
@@ -39,6 +42,6 @@ export function user(sequelize: Sequelize) {
     }, {
         sequelize,
         timestamps: false,
-        tableName: "users"
+        tableName: "comments"
     });
 }

@@ -25,8 +25,9 @@ describe('generateJwtToken', () => {
     
     it('should generate token based on private key.', () => {
         const data = {
-            _id: "asd",
-            email: 'raimonomiar@gmail.com'
+            email: 'raimonomiar@gmail.com',
+            name: 'ayush karki',
+            userId: '62d75ffd-426b-4cc7-929e-7a93cea8197e'
         };
 
         const jwtPrivateKey = 'somethingprivate123';

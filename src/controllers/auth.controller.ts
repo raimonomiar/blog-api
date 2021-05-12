@@ -24,17 +24,17 @@ export class AuthController implements IController {
             const { email, password } = request.body;
             const user = await this.userService.getByEmail(email);
 
-            // if (!user) {
-            //     return response.status(404).send({ message: "User doesnt exists", errors: [] })
-            // }
+            if (!user) {
+                return response.status(404).send({ message: "User doesnt exists", errors: [] })
+            }
 
-            // const validPassword = await compareHash(password, user.get('password'));
-            // if (!validPassword) {
-            //     return response.status(401).send({ message: "Invalid Credentials" });
-            // }
+            const validPassword = await compareHash(password, user.getDataValue('password'));
+            if (!validPassword) {
+                return response.status(401).send({ message: "Invalid Credentials" });
+            }
 
-            // const token = generateJwtToken({ _id: user.get('_id'), email: email });
-            // response.send({ token });
+            const token = generateJwtToken({email: user.getDataValue("email"), userId: user.getDataValue('userid'), name: user.getDataValue('name')});
+            response.send({ token });
 
         } catch (error) {
             next(error);

@@ -4,6 +4,7 @@ import { sequelize } from "./models";
 import cors from "cors";
 import swaggerUi from "swagger-ui-express";
 import swaggerSpec from "./api_docs/swagger.json";
+import { errorMiddleware } from "./middlewares/error";
 export default class App {
     private app: Application;
     port: number;
@@ -78,6 +79,8 @@ export default class App {
         controllers.forEach(controller => {
             this.app.use(`/${controller.route}`, controller.router);
         });
+
+        this.app.use(errorMiddleware);
     }
 
     run(cb: () => void) {

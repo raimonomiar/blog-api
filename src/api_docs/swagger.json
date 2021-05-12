@@ -25,6 +25,13 @@
         }
     ],
     "schemes": ["https", "http"],
+    "securityDefinitions": {
+        "Bearer": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    },
     "paths":{
         "/auth": {
             "post": {
@@ -50,6 +57,81 @@
                     }
                 }
             }
+        },
+        "/categories": {
+            "get": {
+                "tags": ["Category"],
+                "summary": "Get Post Categories",
+                "description": "List all the categories",
+                "produces": ["application/json"],
+                "security": {
+                    "Bearer": []
+                },
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/Name"
+                    },
+                    {
+                        "$ref": "#/parameters/Size"
+                    },
+                    {
+                        "$ref": "#/parameters/Page"
+                    },
+                    {
+                        "$ref": "#/parameters/Order"
+                    },
+                    {
+                        "$ref": "#/parameters/OrderBy"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successfull operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Category"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "parameters": {
+        "Name": {
+            "name": "name",
+            "in": "query",
+            "description": "filter by name",
+            "type": "string"
+        },
+        "Order": {
+            "name": "order",
+            "in": "query",
+            "description": "ASC or DESC",
+            "type": "string",
+            "enum": [
+                "ASC",
+                "DESC"
+            ]
+        },
+        "OrderBy": {
+            "name": "orderBy",
+            "in": "query",
+            "description": "Order values that need to be considered for filter",
+            "type": "string"
+        },
+        "Size": {
+            "name": "size",
+            "in": "query",
+            "description": "Limit of items for a page",
+            "type": "number"
+        },
+        "Page": {
+            "name": "page",
+            "in": "query",
+            "description": "Current number of the page",
+            "type": "number"
         }
     },
     "definitions": {
@@ -61,6 +143,18 @@
                     "type": "string"
                 },
                 "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "Category": {
+            "type": "object",
+            "required": ["name"],
+            "properties": {
+                "categoryId": {
+                    "type": "string"
+                },
+                "name": {
                     "type": "string"
                 }
             }

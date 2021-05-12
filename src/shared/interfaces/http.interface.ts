@@ -1,19 +1,14 @@
-export interface IQuery {
-    order: ESortOrder;
-    orderBy: string;
-    page: number | string;
-    size: number | string;
-}
+import { ParsedQs } from "qs";
 
 
 export interface IPagination {
-    size: number | string;
-    page: number | string;
+    size: number | string | ParsedQs | string [] | ParsedQs [];
+    page: number | string | ParsedQs | string [] | ParsedQs[];
 }
 
 export interface ISort {
-    order: ESortOrder;
-    orderBy: string;
+    order:  number | string | ParsedQs | string [] | ParsedQs [];
+    orderBy:  number | string | ParsedQs | string [] | ParsedQs [];
 }
 
 

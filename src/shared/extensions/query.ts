@@ -8,17 +8,15 @@ export function getSorting(query: ISort) {
     }
 
     const sort = {
-        ...(order === ESortOrder.ASC || order === ESortOrder.DESC ? {
-            [orderBy || "_id"]: order
-        } : {})
+        order: [[orderBy, order]]
     }
 
-    return { sort };
+    return sort;
 
 }
 
 export function getPagination(query: IPagination) {
-    const {size, page} = query;
+    const { size, page } = query;
 
     if (page === undefined || size === "" || page === "") {
         return {}
@@ -26,7 +24,7 @@ export function getPagination(query: IPagination) {
 
     const pagination = {
         limit: Number(query.size) || 20,
-        page: Number(query.page)
+        offset: Number(query.page) * Number(query.size)
     }
 
     return pagination;

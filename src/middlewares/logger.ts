@@ -4,7 +4,8 @@ export const loggerMiddleware = function (request: Request, response: Response, 
     const message = `[${request.method}] url->${request.url} ip->${request.ip} body->${JSON.stringify(request.body)}`;
     global.logger.log({
         level: "info",
-        message
+        message,
+        skip: true
     })
     next();
 }

@@ -1,12 +1,12 @@
 import { Model, Sequelize, DataTypes } from "sequelize";
 
-export class User extends Model {
+export class Category extends Model {
 
 }
 
-export function user(sequelize: Sequelize) {
-    User.init({
-        userid: {
+export function category(sequelize: Sequelize) {
+    Category.init({
+        categoryid: {
             type: DataTypes.NUMBER,
             primaryKey: true
         },
@@ -16,16 +16,6 @@ export function user(sequelize: Sequelize) {
         name: {
             type: DataTypes.STRING,
             allowNull: false,
-        },
-        email: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
-        password: {
-            type: DataTypes.STRING,
-        },
-        location: {
-            type: DataTypes.STRING,
         },
         createdat: {
             type: DataTypes.DATE
@@ -39,6 +29,6 @@ export function user(sequelize: Sequelize) {
     }, {
         sequelize,
         timestamps: false,
-        tableName: "users"
+        tableName: "categories"
     });
 }

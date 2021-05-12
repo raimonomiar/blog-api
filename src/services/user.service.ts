@@ -4,8 +4,9 @@ export class UserService {
 
     async getByEmail(email: string) {
         const user = await  User.findOne({
+            attributes: [['guid', 'userid'], 'email', 'password', 'name', 'location'],
             where: {
-                datedeleted: null,
+                deletedat: null,
                 email: email
             }
         });

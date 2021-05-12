@@ -29,7 +29,8 @@ class HttpException extends Error implements HttpExceptionInterface {
         if (options && options.logger) {
             global.logger.log({
                 level: "error",
-                message: parsedError.error && parsedError.error.description
+                message: parsedError.error && parsedError.error.description,
+                detail: this.stack ?? ""
             });
         }
 

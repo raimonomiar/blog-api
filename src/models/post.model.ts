@@ -1,31 +1,34 @@
 import { Model, Sequelize, DataTypes } from "sequelize";
 
-export class User extends Model {
+export class Post extends Model {
 
 }
 
-export function user(sequelize: Sequelize) {
-    User.init({
-        userid: {
+export function post(sequelize: Sequelize) {
+    Post.init({
+        postid: {
             type: DataTypes.NUMBER,
             primaryKey: true
         },
         guid: {
             type: DataTypes.UUID        
         },
-        name: {
+        title: {
             type: DataTypes.STRING,
             allowNull: false,
         },
-        email: {
-            type: DataTypes.STRING,
-            allowNull: false,
+        ispublished: {
+            type: DataTypes.BOOLEAN
         },
-        password: {
+        content: {
             type: DataTypes.STRING,
+            allowNull: false
         },
-        location: {
-            type: DataTypes.STRING,
+        categoryid: {
+            type: DataTypes.NUMBER,
+        },
+        userid: {
+            type: DataTypes.NUMBER,
         },
         createdat: {
             type: DataTypes.DATE
@@ -39,6 +42,6 @@ export function user(sequelize: Sequelize) {
     }, {
         sequelize,
         timestamps: false,
-        tableName: "users"
+        tableName: "posts"
     });
 }
