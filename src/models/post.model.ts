@@ -8,7 +8,8 @@ export function post(sequelize: Sequelize) {
     Post.init({
         postid: {
             type: DataTypes.NUMBER,
-            primaryKey: true
+            primaryKey: true,
+            autoIncrement: true
         },
         guid: {
             type: DataTypes.UUID        

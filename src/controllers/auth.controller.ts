@@ -1,6 +1,6 @@
 import { IController } from "../shared/interfaces";
 import { Router, Request, Response, NextFunction } from "express";
-import { validateAuth } from "../request_validations/user.validation";
+import { validateAuth } from "../request_validations";
 import { UserService } from "src/services";
 import { compareHash, generateJwtToken } from "../shared/extensions";
 

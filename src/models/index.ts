@@ -18,7 +18,7 @@ export const sequelize = async (connOptions: IDatabaseConnectionOptions) => {
         if (process.env.NODE_ENV !== "production") {
             global.logger.log({
                 level: 'debug',
-                message: connectionUri
+                message: connectionUri,
             })
         }
 
@@ -41,7 +41,8 @@ export const sequelize = async (connOptions: IDatabaseConnectionOptions) => {
     } catch (error) {
         global.logger.log({
             level: "error",
-            message: "Error connecting to database"
+            message: "Error connecting to database",
+            skip: true
         })
     }
 

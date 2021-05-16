@@ -53,7 +53,7 @@
                 ],
                 "responses": {
                     "400": {
-                        "description": "Invalid Body"
+                        "description": "Invalid Body Parameters"
                     }
                 }
             }
@@ -64,9 +64,11 @@
                 "summary": "Get Post Categories",
                 "description": "List all the categories",
                 "produces": ["application/json"],
-                "security": {
-                    "Bearer": []
-                },
+                "security": [
+                    { 
+                        "Bearer": []
+                    }
+                ],
                 "parameters": [
                     {
                         "$ref": "#/parameters/Name"
@@ -93,6 +95,37 @@
                                 "$ref": "#/definitions/Category"
                             }
                         }
+                    }
+                }
+            },
+            "post": {
+                "tags": ["Category"],
+                "summary": "Add Category",
+                "description": "",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "security": [
+                    { 
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Category details",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Category"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    },
+                    "400": {
+                        "description": "Invalid Body Parameters"
                     }
                 }
             }
@@ -151,9 +184,6 @@
             "type": "object",
             "required": ["name"],
             "properties": {
-                "categoryId": {
-                    "type": "string"
-                },
                 "name": {
                     "type": "string"
                 }

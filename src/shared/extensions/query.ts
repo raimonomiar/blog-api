@@ -1,9 +1,9 @@
-import { ESortOrder, IPagination, ISort } from "../interfaces";
+import { IPagination, ISort } from "../interfaces";
 
 export function getSorting(query: ISort) {
-    const { order, orderBy } = query;
+    let { order, orderBy } = query;
 
-    if (order === "" || orderBy === "") {
+    if (order === "" || order === undefined || orderBy === "" || orderBy === undefined) {
         return {};
     }
 
@@ -16,15 +16,19 @@ export function getSorting(query: ISort) {
 }
 
 export function getPagination(query: IPagination) {
-    const { size, page } = query;
+    let { size, page } = query;
 
-    if (page === undefined || size === "" || page === "") {
-        return {}
+    if (page === undefined || page === "") {
+        page = 1;
+    }
+
+    if (size === undefined || size === "") {
+        size = 20;
     }
 
     const pagination = {
-        limit: Number(query.size) || 20,
-        offset: Number(query.page) * Number(query.size)
+        limit: Number(size),
+        offset: (Number(page) - 1) * Number(size) 
     }
 
     return pagination;

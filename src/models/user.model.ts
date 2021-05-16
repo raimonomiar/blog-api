@@ -8,7 +8,8 @@ export function user(sequelize: Sequelize) {
     User.init({
         userid: {
             type: DataTypes.NUMBER,
-            primaryKey: true
+            primaryKey: true,
+            autoIncrement: true
         },
         guid: {
             type: DataTypes.UUID        

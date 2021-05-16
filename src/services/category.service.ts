@@ -1,7 +1,8 @@
 import { ParsedQs } from "qs";
 import { getPagination, getSorting } from "../shared/extensions";
+import { ICategory } from "../shared/interfaces";
 import { Category } from "../models";
-
+import { Op } from "sequelize";
 export class CategoryService {
 
     async getCategories(query: ParsedQs) {
@@ -9,12 +10,17 @@ export class CategoryService {
 
         const categories = await Category.findAll({
             attributes: [['guid', 'categoryId'], 'name'],
-            where: { datedeleted: null, name: name },
+            where: {
+                deletedat: null,
+                ...(name !== undefined ? {
+                    name: { [Op.iLike]: `%${name}%` }
+                } : {})
+            },
             ...getPagination({ page, size }),
             ...getSorting({ order, orderBy })
         });
 
-        const totalItems = await Category.count({ where: { datedeleted: null, name: name } });
+        const totalItems = await Category.count({ where: { deletedat: null, ...(name !== undefined ? { name: name } : {}) } });
         const totalPages = Math.ceil(totalItems / Number(size));
 
         return {
@@ -26,5 +32,9 @@ export class CategoryService {
                 totalPages
             }
         }
+    }
+
+    async add(category: ICategory) {
+        return await Category.create(category);
     }
 }
