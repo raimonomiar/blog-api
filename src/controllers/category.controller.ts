@@ -1,4 +1,4 @@
-import { Router, Request, Response, NextFunction, request } from "express";
+import { Router, Request, Response, NextFunction } from "express";
 import { validateCategory } from "src/request_validations";
 import { CategoryService } from "src/services/category.service";
 import { IController } from "src/shared/interfaces";
@@ -17,6 +17,8 @@ export class CategoryController implements IController {
     initRoutes() {
         this.router.get("/", [authMiddleware], this.getWithPagination);
         this.router.post("/", [authMiddleware, validateCategory], this.create);
+        this.router.put("/:categoryId", [authMiddleware, validateCategory], this.update);
+        this.router.delete("/:categoryId", [authMiddleware, validateCategory], this.delete);
     }
 
     getWithPagination = async (request: Request, response: Response, next: NextFunction) => {
@@ -34,6 +36,45 @@ export class CategoryController implements IController {
         try {
             await this.categoryService.add(request.body);
             response.status(201).send();
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    update = async (request: Request, response: Response, next: NextFunction) => {
+        try {
+            const category = await this.categoryService.getById(request.params.categoryId);
+
+            if (category === undefined || category === null) {
+                global.logger.log({
+                    level: "info",
+                    message: `Update Category - ${category.getDataValue('categoryId')} doesnt exists`
+                })
+                response.status(404).send({ message: "Identifier not found" });
+            }
+
+            await this.categoryService.update(category.getDataValue('categoryId'), request.body);
+            response.status(204).send();
+
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    delete = async (request: Request, response: Response, next: NextFunction) => {
+        try {
+            const category = await this.categoryService.getById(request.params.categoryId);
+
+            if (category === undefined || category === null) {
+                global.logger.log({
+                    level: "info",
+                    message: `Delete Category - ${category.getDataValue('categoryId')} doesnt exists`
+                })
+                response.status(404).send({ message: "Identifier not found" });
+            }
+
+            await this.categoryService.delete(category.getDataValue('categoryId'));
+            response.status(204).send();
         } catch (error) {
             next(error);
         }

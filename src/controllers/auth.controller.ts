@@ -25,7 +25,7 @@ export class AuthController implements IController {
             const user = await this.userService.getByEmail(email);
 
             if (!user) {
-                return response.status(404).send({ message: "User doesnt exists", errors: [] })
+                return response.status(404).send({ message: "User not found"})
             }
 
             const validPassword = await compareHash(password, user.getDataValue('password'));

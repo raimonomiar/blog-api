@@ -34,7 +34,29 @@ export class CategoryService {
         }
     }
 
+    async getById(categoryId: string) {
+        return await Category.findOne({
+            attributes: [['guid', 'categoryId']],
+            where: { deletedat: null, guid: categoryId }
+        });
+    }
+
     async add(category: ICategory) {
         return await Category.create(category);
     }
+
+    async update(categoryId: string, category: ICategory) {
+        return await Category.update(category, {
+            where: { deletedat: null, guid: categoryId }
+        });
+    }
+
+    async delete(categoryId: string) {
+        return await Category.update({
+            updatedat: Date.now()
+        }, {
+            where: { deletedat: null, guid: categoryId }
+        });
+    }
+
 }
