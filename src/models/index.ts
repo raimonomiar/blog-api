@@ -1,10 +1,10 @@
 import { Sequelize } from "sequelize";
 import { IDatabaseConnectionOptions } from "../shared/interfaces";
-import { category } from "./category.model";
+import { Category, category } from "./category.model";
 import { comment } from "./comment.model";
 import { logInfo } from "./loginfo.model";
-import { post } from "./post.model";
-import { user } from "./user.model";
+import { Post, post } from "./post.model";
+import { User, user } from "./user.model";
 
 
 export const sequelize = async (connOptions: IDatabaseConnectionOptions) => {
@@ -22,7 +22,7 @@ export const sequelize = async (connOptions: IDatabaseConnectionOptions) => {
             })
         }
 
-        const config = new Sequelize(connectionUri, {logging: process.env.NODE_ENV == "development" ? true : false});
+        const config = new Sequelize(connectionUri, { logging: process.env.NODE_ENV == "development" ? true : false });
         await config.authenticate();
 
         global.logger.log({
@@ -37,7 +37,9 @@ export const sequelize = async (connOptions: IDatabaseConnectionOptions) => {
         comment(config);
         post(config);
 
-        
+        Post.hasOne(Category, { as: "category" });
+        Post.hasOne(User, { as: "author" });
+
     } catch (error) {
         global.logger.log({
             level: "error",

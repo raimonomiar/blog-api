@@ -5,8 +5,8 @@ import App from "./app";
 import logger from "./shared/logger";
 import { urlencoded, json } from "express";
 import { loggerMiddleware } from "./middlewares";
-import { AuthController, CategoryController } from "./controllers";
-import { UserService, CategoryService } from "./services";
+import { AuthController, CategoryController, PostController } from "./controllers";
+import { UserService, CategoryService, PostService } from "./services";
 import { Sequelize } from "sequelize";
 
 declare global {
@@ -32,7 +32,8 @@ let sequelize:Sequelize = null;
 const app = new App({
     controllers: [
         new AuthController(new UserService()),
-        new CategoryController(new CategoryService())
+        new CategoryController(new CategoryService()),
+        new PostController(new PostService())
     ],
     middlewares: [
         helmet(),
