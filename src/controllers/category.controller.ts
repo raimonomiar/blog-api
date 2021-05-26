@@ -1,7 +1,7 @@
 import { Router, Request, Response, NextFunction } from "express";
-import { validateCategory } from "src/request_validations";
-import { CategoryService } from "src/services/category.service";
-import { IController } from "src/shared/interfaces";
+import { validateCategory } from "../request_validations";
+import { CategoryService } from "../services";
+import { IController } from "../shared/interfaces";
 import { authMiddleware } from "../middlewares";
 export class CategoryController implements IController {
 
@@ -18,7 +18,7 @@ export class CategoryController implements IController {
         this.router.get("/", [authMiddleware], this.getWithPagination);
         this.router.post("/", [authMiddleware, validateCategory], this.create);
         this.router.put("/:categoryId", [authMiddleware, validateCategory], this.update);
-        this.router.delete("/:categoryId", [authMiddleware, validateCategory], this.delete);
+        this.router.delete("/:categoryId", [authMiddleware], this.delete);
     }
 
     getWithPagination = async (request: Request, response: Response, next: NextFunction) => {
@@ -50,7 +50,7 @@ export class CategoryController implements IController {
                     level: "info",
                     message: `Update Category - ${category.getDataValue('categoryId')} doesnt exists`
                 })
-                response.status(404).send({ message: "Identifier not found" });
+                return response.status(404).send({ message: "Identifier not found" });
             }
 
             await this.categoryService.update(category.getDataValue('categoryId'), request.body);
@@ -68,9 +68,9 @@ export class CategoryController implements IController {
             if (category === undefined || category === null) {
                 global.logger.log({
                     level: "info",
-                    message: `Delete Category - ${category.getDataValue('categoryId')} doesnt exists`
+                    message: `Delete Category - ${request.params.categoryId} doesnt exists`
                 })
-                response.status(404).send({ message: "Identifier not found" });
+                return response.status(404).send({ message: "Identifier not found" });
             }
 
             await this.categoryService.delete(category.getDataValue('categoryId'));

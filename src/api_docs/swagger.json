@@ -128,8 +128,10 @@
                         "description": "Invalid Body Parameters"
                     }
                 }
-            },
-            "put/{categoryId}": {
+            }
+        },
+        "/categories/{categoryId}": {
+            "put": {
                 "tags": ["Category"],
                 "summary": "Update Category",
                 "description": "",
@@ -141,6 +143,13 @@
                     }
                 ],
                 "parameters": [
+                    {
+                        "name": "categoryId",
+                        "in": "path",
+                        "description": "Identifier of the Category",
+                        "required": true,
+                        "type": "string"
+                    },
                     {
                         "in": "body",
                         "name": "body",
@@ -163,7 +172,7 @@
                     }
                 }
             },
-            "delete/{categoryId}": {
+            "delete": {
                 "tags": ["Category"],
                 "summary": "Delete Category",
                 "description": "",
@@ -172,6 +181,159 @@
                 "security": [
                     { 
                         "Bearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "categoryId",
+                        "in": "path",
+                        "description": "Identifier of the Category",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "404": {
+                        "description": "Identifier not found."
+                    }
+                }
+            }
+        },
+        "/posts": {
+            "get": {
+                "tags": ["Post"],
+                "summary": "Get Posts of current user",
+                "description": "List all the user posts",
+                "produces": ["application/json"],
+                "security": [
+                    { 
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/Title"
+                    },
+                    {
+                        "$ref": "#/parameters/Size"
+                    },
+                    {
+                        "$ref": "#/parameters/Page"
+                    },
+                    {
+                        "$ref": "#/parameters/Order"
+                    },
+                    {
+                        "$ref": "#/parameters/OrderBy"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successfull operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Post"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": ["Post"],
+                "summary": "Add Post",
+                "description": "",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "security": [
+                    { 
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Post details",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Post"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    },
+                    "400": {
+                        "description": "Invalid Body Parameters"
+                    }
+                }
+            }
+        },
+        "/posts/{postId}": {
+            "put": {
+                "tags": ["Post"],
+                "summary": "Update Post",
+                "description": "",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "security": [
+                    { 
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Post details",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Post"
+                        }
+                    },
+                    {
+                        "name": "postId",
+                        "in": "path",
+                        "description": "Identifier of the Post",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Invalid Body Parameters"
+                    },
+                    "404": {
+                        "description": "Identifier not found."
+                    }
+                }
+            },
+            "delete": {
+                "tags": ["Post"],
+                "summary": "Delete Post",
+                "description": "",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "security": [
+                    { 
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "postId",
+                        "in": "path",
+                        "description": "Identifier of the Post",
+                        "required": true,
+                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -190,6 +352,12 @@
             "name": "name",
             "in": "query",
             "description": "filter by name",
+            "type": "string"
+        },
+        "Title": {
+            "name": "title",
+            "in": "query",
+            "description": "filter posts by title",
             "type": "string"
         },
         "Order": {
@@ -240,6 +408,44 @@
             "properties": {
                 "name": {
                     "type": "string"
+                }
+            }
+        },
+        "Post": {
+            "type": "object",
+            "required": ["title", "content", "category"],
+            "properties": {
+                "title": {
+                    "type": "string"
+                },
+                "content": {
+                    "type": "string"
+                },
+                "category": {
+                    "type": "object",
+                    "properties": {
+                        "categoryId": {
+                            "type": "string",
+                            "required": true
+                        },
+                        "name": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "author": {
+                    "type": "object",
+                    "properties": {
+                        "userId": {
+                            "type": "string"
+                        },
+                        "name": {
+                            "type": "string"
+                        },
+                        "email": {
+                            "type": "string"
+                        }
+                    }
                 }
             }
         }

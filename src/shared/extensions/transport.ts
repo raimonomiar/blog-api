@@ -10,7 +10,7 @@ export class DatabaseTransport extends Transport {
 
         const logInfo = {
             message: info.message,
-            additionaldetails: info.detail == undefined ? "" : info.detail,
+            additionaldetails: info.detail == undefined ? "" : typeof info.detail === 'object' ? JSON.stringify(info.detail) :  info.detail,
             severity: info.level === "error" ? "E" : info.level === "info" ? "I" : "D",
             processname: "API"
         }

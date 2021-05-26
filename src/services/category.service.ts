@@ -36,7 +36,7 @@ export class CategoryService {
 
     async getById(categoryId: string) {
         return await Category.findOne({
-            attributes: [['guid', 'categoryId']],
+            attributes: [['categoryid', 'categoryId']],
             where: { deletedat: null, guid: categoryId }
         });
     }
@@ -45,17 +45,17 @@ export class CategoryService {
         return await Category.create(category);
     }
 
-    async update(categoryId: string, category: ICategory) {
+    async update(categoryId: number, category: ICategory) {
         return await Category.update(category, {
-            where: { deletedat: null, guid: categoryId }
+            where: { deletedat: null, categoryid: categoryId }
         });
     }
 
-    async delete(categoryId: string) {
+    async delete(categoryId: number) {
         return await Category.update({
-            updatedat: Date.now()
+            deletedat: Date.now()
         }, {
-            where: { deletedat: null, guid: categoryId }
+            where: { deletedat: null, categoryid: categoryId }
         });
     }
 

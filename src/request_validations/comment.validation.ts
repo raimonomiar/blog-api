@@ -1,18 +1,17 @@
 import { Request, Response, NextFunction } from "express";
 import Joi from "joi";
 
-export const validatePost = (request: Request, response: Response, next: NextFunction) => {
+export const validateComment = (request: Request, response: Response, next: NextFunction) => {
     const { body } = request;
 
-    const authSchema = Joi.object({
-        title: Joi.string().max(500).required(),
+    const commentSchema = Joi.object({
+        email: Joi.string().email().required(),
         content: Joi.string().required(),
-        category: Joi.object().keys({
-            categoryId: Joi.string().uuid().required()
-        })
+        star: Joi.number()
     });
 
-    const { error } = authSchema.validate(body);
+    const { error } = commentSchema.validate(body);
+
     if (error && error.details) {
         global.logger.log({
             level: "info",
