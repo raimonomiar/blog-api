@@ -37,8 +37,8 @@ export const sequelize = async (connOptions: IDatabaseConnectionOptions) => {
         comment(config);
         post(config);
 
-        Post.hasOne(Category, { as: "category", foreignKey: "categoryid" });
-        Post.hasOne(User, { as: "author", foreignKey: "userid" });
+        Post.hasOne(Category, { as: "category", sourceKey: "categoryid", foreignKey: "categoryid" });
+        Post.hasOne(User, { as: "author", sourceKey: "userid", foreignKey: "userid" });
 
     } catch (error) {
         global.logger.log({

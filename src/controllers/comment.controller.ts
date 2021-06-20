@@ -1,10 +1,11 @@
-import { Request, Response, NextFunction, Router, request } from "express";
+import { Request, Response, NextFunction, Router } from "express";
 import { IController } from "../shared/interfaces";
 import { CommentService } from "../services";
+import { validateComment } from "src/request_validations/comment.validation";
 export class CommentController implements IController {
 
     public router: Router;
-    public route: string = 'comments';
+    public route: string = 'posts';
 
     constructor(private commentService: CommentService) {
         this.router = Router();
@@ -13,11 +14,11 @@ export class CommentController implements IController {
     }
 
     initRoutes() {
-        this.router.get("/", this.getWithPagination);
-        this.router.post("/", this.create);
-        this.router.put("/:commentId", this.update);
-        this.router.patch("/:commentId", this.hideComment);
-        this.router.delete("/:commentId", this.delete);
+        this.router.get("/:postId/comments", this.getWithPagination);
+        this.router.post("/:postId/comments", validateComment, this.create);
+        this.router.put("/:postId/comments/:commentId", validateComment, this.update);
+        this.router.patch("/:postId/comments/:commentId", this.hideComment);
+        this.router.delete("/:postId/comments/:commentId", this.delete);
     }
 
     getWithPagination = async (request: Request, response: Response, next: NextFunction) => {
@@ -27,7 +28,7 @@ export class CommentController implements IController {
                 return response.status(404).send({ message: "Identifier not found" });
             }
 
-            const comments = this.commentService.getComments(request.query, postId);
+            const comments = await this.commentService.getComments(request.query, postId);
             response.json(comments);
         } catch (error) {
             next(error);
@@ -37,6 +38,9 @@ export class CommentController implements IController {
     create = async (request: Request, response: Response, next: NextFunction) => {
         try {
             const postId = request.params.postId;
+            console.log(postId);
+            console.log(JSON.stringify(request.params));
+            
             if (postId === undefined || postId === "") {
                 return response.status(404).send({ message: "Identifier not found" });
             }
@@ -55,7 +59,7 @@ export class CommentController implements IController {
                 return response.status(404).send({ message: "Identifier not found" });
             }
 
-            const comment = await this.commentService.getById(request.params.categoryId);
+            const comment = await this.commentService.getById(request.params.commentId);
 
             if (comment === undefined || comment === null) {
                 global.logger.log({
@@ -80,7 +84,7 @@ export class CommentController implements IController {
                 return response.status(404).send({ message: "Identifier not found" });
             }
 
-            const comment = await this.commentService.getById(request.params.categoryId);
+            const comment = await this.commentService.getById(request.params.commentId);
             if (comment === undefined || comment === null) {
                 global.logger.log({
                     level: "info",

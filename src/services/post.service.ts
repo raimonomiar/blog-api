@@ -18,9 +18,11 @@ export class PostService {
             include: [{
                 association: "author",
                 attributes: [["guid", "userId"], "name", "email"],
+                required: true
             }, {
                 association: "category", 
                 attributes: [["guid", "categoryId"], "name"],
+                required: true
             }],
             where: {
                 deletedat: null,

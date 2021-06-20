@@ -345,6 +345,197 @@
                     }
                 }
             }
+        },
+        "/posts/{postId}/comments": {
+            "get": {
+                "tags": ["Comment"],
+                "summary": "Get Comment of current post",
+                "description": "List all the comments of a post",
+                "produces": ["application/json"],
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/Content"
+                    },
+                    {
+                        "$ref": "#/parameters/Size"
+                    },
+                    {
+                        "$ref": "#/parameters/Page"
+                    },
+                    {
+                        "$ref": "#/parameters/Order"
+                    },
+                    {
+                        "$ref": "#/parameters/OrderBy"
+                    },
+                    {
+                        "name": "postId",
+                        "in": "path",
+                        "description": "Identifier of the Post",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successfull operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Comment"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": ["Comment"],
+                "summary": "Add Comment",
+                "description": "",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Post details",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Comment"
+                        }
+                    },
+                    {
+                        "name": "postId",
+                        "in": "path",
+                        "description": "Identifier of the Post",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    },
+                    "400": {
+                        "description": "Invalid Body Parameters"
+                    }
+                }
+            }
+        },
+        "/posts/{postId}/comments/{commentId}": {
+            "put": {
+                "tags": ["Comment"],
+                "summary": "Update Comment",
+                "description": "",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Post details",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Comment"
+                        }
+                    },
+                    {
+                        "name": "postId",
+                        "in": "path",
+                        "description": "Identifier of the Post",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "commentId",
+                        "in": "path",
+                        "description": "Identifier of the Comment",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Invalid Body Parameters"
+                    }
+                }
+            },
+            "patch": {
+                "tags": ["Comment"],
+                "summary": "Update Comment",
+                "description": "",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "security": [
+                    { 
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "postId",
+                        "in": "path",
+                        "description": "Identifier of the Post",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "commentId",
+                        "in": "path",
+                        "description": "Identifier of the Comment",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Invalid Body Parameters"
+                    }
+                }
+            },
+            "delete": {
+                "tags": ["Comment"],
+                "summary": "Update Comment",
+                "description": "",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "security": [
+                    { 
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "postId",
+                        "in": "path",
+                        "description": "Identifier of the Post",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "commentId",
+                        "in": "path",
+                        "description": "Identifier of the Comment",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Invalid Body Parameters"
+                    }
+                }
+            }
+
         }
     },
     "parameters": {
@@ -358,6 +549,12 @@
             "name": "title",
             "in": "query",
             "description": "filter posts by title",
+            "type": "string"
+        },
+        "Content": {
+            "name": "content",
+            "in": "query",
+            "description": "filter comments by content",
             "type": "string"
         },
         "Order": {
@@ -446,6 +643,27 @@
                             "type": "string"
                         }
                     }
+                }
+            }
+        },
+        "Comment": {
+            "type": "object",
+            "required": ["email", "content"],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "content": {
+                    "type": "string"
+                },
+                "isRemoved": {
+                    "type": "boolean"
+                },
+                "star": {
+                    "type": "number"
+                },
+                "createdAt": {
+                    "type": "string"
                 }
             }
         }

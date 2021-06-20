@@ -17,7 +17,7 @@ export class CommentService {
         });
 
         const comments = await Comment.findAll({
-            attributes: [["guid", "commentId"], "email", "content", ["isremoved", "isRemoved"], "star"],
+            attributes: [["guid", "commentId"], "email", "content", ["isremoved", "isRemoved"], "star", ["createdat", "createdAt"]],
             where: {
                 deletedat: null,
                 postid: post.getDataValue("postId"),
