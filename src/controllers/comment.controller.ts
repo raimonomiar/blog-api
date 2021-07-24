@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction, Router } from "express";
 import { IController } from "../shared/interfaces";
 import { CommentService } from "../services";
-import { validateComment } from "src/request_validations/comment.validation";
+import { validateComment } from "../request_validations";
 export class CommentController implements IController {
 
     public router: Router;

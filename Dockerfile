@@ -1,13 +1,6 @@
-FROM node:14.15.4-alpine as builder
-
-RUN apk add --no-cache \
-    build-base \
-    gcc \
-    g++ \
-    make
-
+FROM node:14 as builder
 WORKDIR /usr/src/app
-COPY "tsconfig.json" "package.json" "package-lock.json" "./"
+COPY "package.json" "package-lock.json" "./"
 RUN npm ci --production
 RUN npm i typescript
 COPY . "./"
