@@ -47,8 +47,7 @@ export default class App {
 
             const corsOptions = {
                 origin: (origin: string, callback: any) => {
-                    console.log(`CORS request origin -> ${origin}`);
-
+                    if (!origin) return callback(null, true);
                     if (whiteList.indexOf(origin) !== -1) {
                         callback(null, true)
                     } else {
