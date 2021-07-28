@@ -52,7 +52,7 @@ export default class App {
                     if (whiteList.indexOf(origin) !== -1) {
                         callback(null, true)
                     } else {
-                        callback('Domain is not valid')
+                        callback(new Error('Domain is not valid'))
                     }
                 }
             }
