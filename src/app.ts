@@ -43,7 +43,7 @@ export default class App {
     middlewares(middlewares: any[]) {
 
         if (['production'].indexOf(process.env.NODE_ENV) !== -1) {
-            const whiteList: string[] = [] //Array of whielist domains here;
+            const whiteList: string[] = process.env.CORS_DOMAINS.split(',');
 
             const corsOptions = {
                 origin: (origin: string, callback: any) => {
@@ -64,7 +64,8 @@ export default class App {
 
         middlewares.forEach(middleware => {
             this.app.use(middleware);
-        })
+        });
+        this.app.disable('x-powered-by');
     }
 
     initRoutes(controllers: any[]) {
